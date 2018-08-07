@@ -1,0 +1,18 @@
+---
+- name: Start keepalived service
+  service:
+    name: keepalived
+    state: started
+  listen: start-keepalived
+
+- name: Stop keepalived service
+  service:
+    name: keepalived
+    state: stopped
+  listen: stop-keepalived
+
+- name: Restart keepalived service
+  service:
+    name: keepalived
+    state: restarted
+  listen: restart-keepalived

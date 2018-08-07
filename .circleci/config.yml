@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Creating Docker Environment
+          command: |
+            docker pull avuong/centos7-systemd:latest
+            docker run --name haproxybuild --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro avuong/centos7-systemd:latest /sbin/init
+      - run:
+          name: Greeting
+          command: docker exec --tty haproxybuild env TERM=xterm sh -c "echo 'hello world'"
+      - run:
+          name: Print the Current Time
+          command: docker exec --tty haproxybuild env TERM=xterm sh -c "echo `date`"
+      - run:
+          name: Print all env variables
+          command: printenv
+      - run:
+          name: Print working directory
+          command: echo `pwd`;ls -la

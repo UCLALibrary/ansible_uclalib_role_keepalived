@@ -1,0 +1,9 @@
+---
+- name: Configure VRRP Keepalived
+  template:
+    src: keepalived.conf.j2
+    dest: "{{ keepalived_conf }}"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart-keepalived

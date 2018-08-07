@@ -1,0 +1,5 @@
+---
+- name: Install Keepalived
+  package:
+    name: "{{ keepalived_pkg }}"
+    state: present

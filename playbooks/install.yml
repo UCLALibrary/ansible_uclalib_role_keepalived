@@ -1,0 +1,7 @@
+---
+# This is a sample playbook that is also used to test the installation portion of this role.
+
+- hosts: all
+  roles:
+   - { role: ansible_uclalib_role_keepalived }
+   
