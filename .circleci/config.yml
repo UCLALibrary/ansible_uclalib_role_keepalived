@@ -12,10 +12,10 @@ jobs:
       - run:
           name: Install Prereqs
           command: |
-            docker exec --tty haproxybuild env TERM=xterm sh -c "yum -y install epel-release"
-            docker exec --tty haproxybuild env TERM=xterm sh -c "yum -y install ansible"
-            docker exec --tty haproxybuild env TERM=xterm sh -c "/usr/bin/ansible --version"
-            docker exec --tty haproxybuild env TERM=xterm sh -c "/usr/bin/ansible-playbook -l localhost /etc/ansible/roles/$CIRCLE_PROJECT_REPONAME/playbooks/install.yml"
+            docker exec --tty testvm env TERM=xterm sh -c "yum -y install epel-release"
+            docker exec --tty testvm env TERM=xterm sh -c "yum -y install ansible"
+            docker exec --tty testvm env TERM=xterm sh -c "/usr/bin/ansible --version"
+            docker exec --tty testvm env TERM=xterm sh -c "/usr/bin/ansible-playbook -l localhost /etc/ansible/roles/$CIRCLE_PROJECT_REPONAME/playbooks/install.yml"
       - run:
           name: Print all env variables
           command: printenv
