@@ -4,4 +4,3 @@
 - hosts: all
   roles:
    - { role: ansible_uclalib_role_keepalived }
-   
