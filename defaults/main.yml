@@ -1,0 +1,16 @@
+---
+notify_email: whatsyouremailaddress@localhost
+hostname: "{{ ansible_hostname }}"
+router_id: 51
+vip_name: VIPS_1
+instance_type: MASTER
+virt_router_id: 51
+priority: 150
+primary_instance: 172.17.0.3
+failover_instance: 172.17.0.4
+auth_pass: badpassword
+frontend_device_name: eth0
+backend_device_name: eth0
+front_end_ips: [172.17.0.7, 172.17.0.8]
+
+keepalived_conf: /etc/keepalived/keepalived.conf

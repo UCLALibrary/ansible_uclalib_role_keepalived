@@ -1,0 +1,26 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Creating Docker Environment
+          command: |
+            docker pull avuong/centos7-systemd:latest
+            docker run --name testvm --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro -v `pwd`:/etc/ansible/roles/$CIRCLE_PROJECT_REPONAME avuong/centos7-systemd:latest /sbin/init
+      - run:
+          name: Install Prereqs
+          command: |
+            docker exec --tty testvm env TERM=xterm sh -c "yum -y install epel-release"
+            docker exec --tty testvm env TERM=xterm sh -c "yum -y install ansible"
+            docker exec --tty testvm env TERM=xterm sh -c "/usr/bin/ansible --version"
+      - run:
+          name: Run test playbook
+          command: docker exec --tty testvm env TERM=xterm sh -c "/usr/bin/ansible-playbook /etc/ansible/roles/$CIRCLE_PROJECT_REPONAME/playbooks/install.yml -i /etc/ansible/roles/$CIRCLE_PROJECT_REPONAME/playbooks/hosts -l localhost -vv"
+      - run:
+          name: Print all env variables
+          command: printenv
+      - run:
+          name: Print working directory
+          command: echo `pwd`;ls -la

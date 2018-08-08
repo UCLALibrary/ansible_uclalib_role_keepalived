@@ -1,0 +1,35 @@
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+      {{ notify_email }}
+   }
+   notification_email_from keepalived@{{ hostname }}
+   smtp_server 127.0.0.1 
+   smtp_connect_timeout 5
+   router_id {{ router_id }}
+}
+
+vrrp_instance {{ vip_name }} {
+    state {{ instance_type }}
+    interface {{ backend_device_name }}
+    virtual_router_id {{ virt_router_id }}
+    priority 150
+    advert_int 1
+    smtp_alert
+    unicast_src_ip {{ primary_instance }}
+    unicast_peer {
+        {{ failover_instance }}
+    }
+    authentication {
+        auth_type PASS
+        auth_pass {{ auth_pass }}
+    }
+{% if front_end_ips is defined %}
+    virtual_ipaddress {
+{% for ip in front_end_ips %}
+        "{{ ip }} dev {{ frontend_device_name }} label {{ frontend_device_name }}:{{ ip }}"
+{% endfor %}
+    }
+{% endif %}
+}
