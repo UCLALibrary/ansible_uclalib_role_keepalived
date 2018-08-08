@@ -8,13 +8,14 @@ jobs:
           name: Creating Docker Environment
           command: |
             docker pull avuong/centos7-systemd:latest
-            docker run --name haproxybuild --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro avuong/centos7-systemd:latest /sbin/init
+            docker run --name testvm --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro -v `pwd`:/etc/ansible/roles/$CIRCLE_PROJECT_REPONAME avuong/centos7-systemd:latest /sbin/init
       - run:
-          name: Greeting
-          command: docker exec --tty haproxybuild env TERM=xterm sh -c "echo 'hello world'"
-      - run:
-          name: Print the Current Time
-          command: docker exec --tty haproxybuild env TERM=xterm sh -c "echo `date`"
+          name: Install Prereqs
+          command: |
+            docker exec --tty haproxybuild env TERM=xterm sh -c "yum -y install epel-release"
+            docker exec --tty haproxybuild env TERM=xterm sh -c "yum -y install ansible"
+            docker exec --tty haproxybuild env TERM=xterm sh -c "/usr/bin/ansible --version"
+            docker exec --tty haproxybuild env TERM=xterm sh -c "/usr/bin/ansible-playbook -l localhost /etc/ansible/roles/$CIRCLE_PROJECT_REPONAME/playbooks/install.yml"
       - run:
           name: Print all env variables
           command: printenv
