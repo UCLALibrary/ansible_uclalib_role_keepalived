@@ -6,4 +6,5 @@
     owner: root
     group: root
     mode: 0640
+  with_items: front_end_ips
   notify: restart-keepalived

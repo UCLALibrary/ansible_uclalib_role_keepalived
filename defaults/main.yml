@@ -11,6 +11,11 @@ failover_instance: 172.17.0.4
 auth_pass: badpassword
 frontend_device_name: eth0
 backend_device_name: eth0
-front_end_ips: [172.17.0.7, 172.17.0.8]
+front_end_ips: [
+
+{'ip': 172.17.0.7, 'suffix': 7},
+{'ip': 172.17.0.8, 'suffix': 8}
+
+]
 
 keepalived_conf: /etc/keepalived/keepalived.conf
